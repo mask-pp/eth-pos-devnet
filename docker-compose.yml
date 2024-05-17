@@ -3,12 +3,12 @@ services:
   # Creates a genesis state for the beacon chain using a YAML configuration file and
   # a deterministic set of 64 validators.
   create-beacon-chain-genesis:
-    image: "gcr.io/prysmaticlabs/prysm/cmd/prysmctl:latest"
+    image: "gcr.io/prysmaticlabs/prysm/cmd/prysmctl@sha256:18eb5c5e40da9c44ee6a691482fb3ae954c26156bab2ed3690aabbd76fb6243c"
     command:
       - testnet
       - generate-genesis
       - --fork=deneb
-      - --num-validators=64
+      - --num-validators=1
       - --genesis-time-delay=15
       - --output-ssz=/consensus/genesis.ssz
       - --chain-config-file=/consensus/config.yml
@@ -28,7 +28,7 @@ services:
 
   # Sets up the genesis configuration for the go-ethereum client from a JSON file.
   geth-genesis:
-    image: "ethereum/client-go:latest"
+    image: "ethereum/client-go:v1.13.15"
     command: --datadir=/execution init /execution/genesis.json
     volumes:
       - ./execution:/execution
@@ -124,7 +124,7 @@ services:
       - --beacon-rpc-provider=beacon-chain:4000
       - --datadir=/consensus/validatordata
       - --accept-terms-of-use
-      - --interop-num-validators=64
+      - --interop-num-validators=3
       - --interop-start-index=0
       - --chain-config-file=/consensus/config.yml
       - --force-clear-db
