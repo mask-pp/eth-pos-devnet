@@ -51,7 +51,6 @@ services:
       - --min-sync-peers=0
       - --genesis-state=/consensus/genesis.ssz
       - --bootstrap-node=
-      - --interop-eth1data-votes
       # The chain configuration file used for setting up Prysm
       - --chain-config-file=/consensus/config.yml
       # We specify the chain id used by our execution client
@@ -65,10 +64,10 @@ services:
       - --suggested-fee-recipient=0x123463a4b065722e99115d6c222f267d9cabb524
       - --minimum-peers-per-subnet=0
       - --enable-debug-rpc-endpoints
-      - --force-clear-db
-    depends_on:
-      create-beacon-chain-genesis:
-        condition: service_completed_successfully
+      - --no-discovery
+#    depends_on:
+#      create-beacon-chain-genesis:
+#        condition: service_completed_successfully
     ports:
       - 4000:4000
       - 3500:3500
@@ -107,8 +106,8 @@ services:
       - 8545:8545
       - 8546:8546
     depends_on:
-      geth-genesis:
-        condition: service_completed_successfully
+#      geth-genesis:
+#        condition: service_completed_successfully
       beacon-chain:
         condition: service_started
     volumes:
@@ -127,7 +126,6 @@ services:
       - --interop-num-validators=3
       - --interop-start-index=0
       - --chain-config-file=/consensus/config.yml
-      - --force-clear-db
     depends_on:
       beacon-chain:
         condition: service_started
