@@ -34,8 +34,6 @@ services:
       - ./execution:/execution
       - ./execution/genesis.json:/execution/genesis.json
     depends_on:
-      create-beacon-chain-genesis:
-        condition: service_completed_successfully
       geth-remove-db:
         condition: service_completed_successfully
 
@@ -66,9 +64,6 @@ services:
       - --minimum-peers-per-subnet=0
       - --enable-debug-rpc-endpoints
       - --force-clear-db
-    depends_on:
-      create-beacon-chain-genesis:
-        condition: service_completed_successfully
     ports:
       - 4000:4000
       - 3500:3500
