@@ -8,8 +8,7 @@ services:
       - generate-genesis
       - --fork=electra
       - --num-validators=64
-      - --genesis-time=1742047400
-      - --genesis-time-delay=100
+      - --genesis-time-delay=15
       - --output-ssz=/consensus/genesis.ssz
       - --chain-config-file=/consensus/config.yml
       - --geth-genesis-json-in=/execution/genesis.json
@@ -70,6 +69,9 @@ services:
       - 8080:8080
       - 6060:6060
       - 9090:9090
+    depends_on:
+      geth:
+        condition: service_started
     volumes:
       - ./consensus:/consensus
       - ./execution:/execution
@@ -105,8 +107,6 @@ services:
     depends_on:
       geth-genesis:
         condition: service_completed_successfully
-      beacon-chain:
-        condition: service_started
     volumes:
       - ./execution:/execution
       - ./execution/jwtsecret:/execution/jwtsecret
