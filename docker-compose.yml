@@ -8,7 +8,8 @@ services:
       - generate-genesis
       - --fork=fulu
       - --num-validators=1
-      - --genesis-time-delay=30
+      - -genesis-time=1742199600
+      - --genesis-time-delay=0
       - --output-ssz=/consensus/genesis.ssz
       - --chain-config-file=/consensus/config.yml
       - --geth-genesis-json-in=/execution/genesis.json
