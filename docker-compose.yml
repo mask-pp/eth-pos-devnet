@@ -6,9 +6,9 @@ services:
     command:
       - testnet
       - generate-genesis
-      - --fork=electra
-      - --num-validators=64
-      - --genesis-time-delay=15
+      - --fork=fulu
+      - --num-validators=1
+      - --genesis-time-delay=30
       - --output-ssz=/consensus/genesis.ssz
       - --chain-config-file=/consensus/config.yml
       - --geth-genesis-json-in=/execution/genesis.json
@@ -43,11 +43,11 @@ services:
   beacon-chain:
     image: "gcr.io/prysmaticlabs/prysm/beacon-chain:v5.3.1"
     command:
+      - -verbosity=info
       - --datadir=/consensus/beacondata
       # No peers to sync with in this testnet, so setting to 0
       - --min-sync-peers=0
       - --genesis-state=/consensus/genesis.ssz
-      - --bootstrap-node=
       - --interop-eth1data-votes
       # The chain configuration file used for setting up Prysm
       - --chain-config-file=/consensus/config.yml
@@ -82,7 +82,7 @@ services:
   geth:
     image: "ethereum/client-go:v1.15.5"
     command:
-      - --verbosity=4
+      - --verbosity=3
       - --http
       - --http.api=eth,net,web3
       - --http.addr=0.0.0.0
@@ -117,10 +117,11 @@ services:
   validator:
     image: "gcr.io/prysmaticlabs/prysm/validator:v5.3.1"
     command:
+      - --verbosity=info
       - --beacon-rpc-provider=beacon-chain:4000
       - --datadir=/consensus/validatordata
       - --accept-terms-of-use
-      - --interop-num-validators=64
+      - --interop-num-validators=1
       - --interop-start-index=0
       - --chain-config-file=/consensus/config.yml
       - --force-clear-db
