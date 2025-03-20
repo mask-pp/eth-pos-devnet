@@ -29,7 +29,7 @@ services:
   # Sets up the genesis configuration for the go-ethereum client from a JSON file.
   geth-genesis:
     image: "ethereum/client-go:v1.15.5"
-    command: --datadir=/execution init /execution/genesis.json
+    command: --datadir=/execution --state.scheme=hash init /execution/genesis.json
     volumes:
       - ./execution:/execution
       - ./execution/genesis.json:/execution/genesis.json
@@ -100,8 +100,8 @@ services:
       - --unlock=0x123463a4b065722e99115d6c222f267d9cabb524
       - --password=/execution/geth_password.txt
       - --nodiscover
+      - --gcmode=archive
       - --syncmode=full
-      - --state.scheme=path
     ports:
       - 8551:8551
       - 8545:8545
